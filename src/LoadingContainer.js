@@ -10,6 +10,10 @@ class LoadingContainer extends Component {
   render() {
     if (this.props.web3.status === 'failed')
     {
+      if (this.props.errorComp) {
+        return this.props.errorComp
+      }
+
       return(
         <main className="container loading-screen">
           <div className="pure-g">
@@ -25,6 +29,10 @@ class LoadingContainer extends Component {
     if (this.props.drizzleStatus.initialized)
     {
       return Children.only(this.props.children)
+    }
+
+    if (this.props.loadingComp) {
+      return this.props.loadingComp
     }
 
     return(
