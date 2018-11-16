@@ -7,6 +7,8 @@ All components require a `drizzle` and `drizzleState` props. See the [drizzle-re
 
 ### AccountData
 
+AccountData fetches the balance of an address.
+
 `accountIndex` (string, required) Index of the account to get the balance of.
 
 `units` (string) Units to convert balance into; the default is "Wei".
@@ -14,6 +16,8 @@ All components require a `drizzle` and `drizzleState` props. See the [drizzle-re
 `displayFunc` (function(addr, bal, units)) If given, used to format and display the account data. 
 
 ### ContractData
+
+ContractData fetches data from a contract using the specified method and renders the result(s) as an unordered list (i.e., inside `<ul>` tags) by default. The default behaviour can be overwritten by specifying a `displayFunc` as decribed below; this enables the composition of more complex structures, like tables (see examples).
 
 `contract` (string, required) Name of the contract to call.
 
@@ -31,6 +35,8 @@ All components require a `drizzle` and `drizzleState` props. See the [drizzle-re
 
 ### ContractForm
 
+ContractForm creates a form for interacting with methods on smart contracts.
+
 `contract` (string, required) Name of the contract whose method will be the basis the form.
 
 `method` (string, required) Method whose inputs will be used to create corresponding form fields.
@@ -39,19 +45,54 @@ All components require a `drizzle` and `drizzleState` props. See the [drizzle-re
 
 `labels` (array) Custom labels; will follow ABI input ordering. Useful for friendlier names. EX: "to" becoming "Recipient Address".
 
+`hideMethod` (boolean) Hides the method name if true.
+
 ## Example Usage
 
 ### AccountData
 
-`<AccountData drizzle={drizzle} drizzleStatus={drizzleStatus} accountIndex='0' units='ether' displayFunc={(addr, bal, units) => (<div><strong>{addr}:</strong> {bal} {units}</div>)} />`
+```<AccountData drizzle={drizzle} drizzleState={drizzleState} accountIndex='0' units='ether' displayFunc={(addr, bal, units) => (<div><strong>{addr}</strong>: {bal} {units}</div>)} />```
+
+> **0x...**: 3.43 ether
+
 
 ### ContractData
 
-`<ContractData drizzle={drizzle} drizzleStatus={drizzleStatus} contract='MyContract' method='getStructKeys' />`
-`<ContractData drizzle={drizzle} drizzleStatus={drizzleStatus} contract='MyContract' method='getStruct' methodArgs=['1'] />`
+```
+<ContractData drizzle={drizzle} drizzleState={drizzleState} contract='MyContract' method='getStructKeys' />
+```
+
+produces:
+
+<ul><li>structKey1</li><li>structKey2</li><li>...</li></ul>
+
+```
+<ContractData drizzle={drizzle} drizzleState={drizzleState} contract='MyContract' method='getStruct' methodArgs=['1'] />
+```
+
+produces:
+
+<ul><li>struct1Field1</li><li>struct1Field2</li><li>...</li></ul>
+
+```
+<ContractData drizzle={drizzle} drizzleState={drizzleState} contract='MyContract' method='getStructKeys'
+  displayFunc={data => data === undefined ? null : data.map((id, i) => (
+    <ContractData key={i} drizzle={drizzle} drizzleState={drizzleState} contract='MyContract'
+      method='getStruct'
+      methodArgs={[id]}
+      displayFunc={data_ => data_ === undefined ? null : (
+        <tr>{data_.map((val, j) => (<td key={j}>{val}</td>)}</tr>
+      )}
+    />
+  ))}
+/>
+```
+
+produces:
+
+<table><tr><td>struct1Field1</td><td>struct1Field2</td><td>...</td></tr> <tr><td>struct2Field1</td><td>struct2Field2</td><td>...</td></tr></table>
+
 
 ### ContractForm
 
-`<ContractForm drizzle={drizzle} drizzleStatus={drizzleStatus} contract='MyContract' method='addStruct' />`
-
-
+`<ContractForm drizzle={drizzle} drizzleState={drizzleState} contract='MyContract' method='addStruct' />`
