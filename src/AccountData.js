@@ -6,11 +6,7 @@ import React, { Component } from 'react';
 
 class AccountData extends Component {
 	constructor(props) {
-		super(props);	
-
-		// Get the units to display.
-		this.units = this.props.units ? this.props.units.charAt(0).toUpperCase() + this.props.units.slice(1) : 'Wei';
-
+		super(props);
 		this.address = this.props.drizzleState.accounts[this.props.accountIndex];
 		this.state = { balance: null };
 	}
@@ -21,14 +17,24 @@ class AccountData extends Component {
 	}
 
 	render() {
+		// Use lowercase units. See https://web3js.readthedocs.io/en/1.0/web3-utils.html#fromwei.
+		const units = this.props.units ? this.props.units.toLowerCase() : 'wei'
+		var balance = this.context.drizzle.web3.utils.fromWei(this.state.balance, units)
+		
+		if (this.props.precision) {
+			// Should there be a sanity check on the precision prop before calling?
+			// e.g. precision = this.props.precision >= 0 ? this.props.precision : 3
+			balance = this.precisionRound(balance, this.props.precision)	
+		}
+		
 		if (this.props.displayFunc) {
-			return this.props.displayFunc(this.address, this.state.balance, this.units); 
+			return this.props.displayFunc(this.address, balance, units); 
 		}
 
 		return (
 			<div>
 				<h4>{this.address}</h4>
-				<p>{this.state.balance} {this.units}</p>
+				<p>{balance} {units}</p>
 			</div>
 		);
 	}
