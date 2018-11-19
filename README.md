@@ -67,7 +67,7 @@ produces:
 <ul><li>structKey1</li><li>structKey2</li><li>...</li></ul>
 
 ```
-<ContractData drizzle={drizzle} drizzleState={drizzleState} contract='MyContract' method='getStruct' methodArgs=['1'] />
+<ContractData drizzle={drizzle} drizzleState={drizzleState} contract='MyContract' method='getStruct' methodArgs={['1']} />
 ```
 
 produces:
