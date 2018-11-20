@@ -50,8 +50,6 @@ class ContractData extends Component {
 			return this.props.displayFunc(displayData);
 		}
 
-		// Need to convert on an per-item basis for Objects/arrays.
-
 		// Optionally convert to UTF8
 		if (this.props.toUtf8) {
 			displayData = drizzle.web3.utils.hexToUtf8(displayData);
