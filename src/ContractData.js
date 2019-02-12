@@ -22,14 +22,14 @@ class ContractData extends Component {
 
   render() {
     // Contract is not yet intialized.
-    if(!this.props.contracts[this.props.contract].initialized) {
+    if (!this.props.contracts[this.props.contract].initialized) {
       return (
         <span>Initializing...</span>
       )
     }
 
     // If the cache key we received earlier isn't in the store yet; the initial value is still being fetched.
-    if(!(this.dataKey in this.props.contracts[this.props.contract][this.props.method])) {
+    if (!(this.dataKey in this.props.contracts[this.props.contract][this.props.method])) {
       return (
         <span>Fetching...</span>
       )
@@ -61,7 +61,7 @@ class ContractData extends Component {
         <li key={index}>{`${datum}`}{pendingSpinner}</li>
       })
 
-      return(
+      return (
         <ul>
           {displayListItems}
         </ul>
@@ -76,7 +76,7 @@ class ContractData extends Component {
       Object.keys(displayData).forEach((key) => {
         if (i != key) {
           displayObjectProps.push(<li key={i}>
-            <strong>{key}</strong>{pendingSpinner}<br/>
+            <strong>{key}</strong>{pendingSpinner}<br />
             {`${displayData[key]}`}
           </li>)
         }
@@ -84,14 +84,14 @@ class ContractData extends Component {
         i++
       })
 
-      return(
+      return (
         <ul>
           {displayObjectProps}
         </ul>
       )
     }
 
-    return(
+    return (
       <span>{`${displayData}`}{pendingSpinner}</span>
     )
   }
