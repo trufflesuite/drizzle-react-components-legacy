@@ -10,14 +10,17 @@ class ContractData extends Component {
   constructor(props, context) {
     super(props)
 
+    // Fetch initial value from chain and return cache key for reactive updates.
+    var methodArgs = this.props.methodArgs ? this.props.methodArgs : []
+
+    this.state = {
+      dataKey: this.contracts[this.props.contract].methods[this.props.method].cacheCall(...methodArgs)
+    };
+
     this.contracts = context.drizzle.contracts
 
     // Get the contract ABI
     const abi = this.contracts[this.props.contract].abi;
-
-    // Fetch initial value from chain and return cache key for reactive updates.
-    var methodArgs = this.props.methodArgs ? this.props.methodArgs : []
-    this.dataKey = this.contracts[this.props.contract].methods[this.props.method].cacheCall(...methodArgs)
   }
 
   render() {
@@ -29,7 +32,7 @@ class ContractData extends Component {
     }
 
     // If the cache key we received earlier isn't in the store yet; the initial value is still being fetched.
-    if (!(this.dataKey in this.props.contracts[this.props.contract][this.props.method])) {
+    if (!(this.state.dataKey in this.props.contracts[this.props.contract][this.props.method])) {
       return (
         <span>Fetching...</span>
       )
@@ -43,7 +46,7 @@ class ContractData extends Component {
       pendingSpinner = ''
     }
 
-    var displayData = this.props.contracts[this.props.contract][this.props.method][this.dataKey].value
+    var displayData = this.props.contracts[this.props.contract][this.props.method][this.state.dataKey].value
 
     // Optionally convert to UTF8
     if (this.props.toUtf8) {
