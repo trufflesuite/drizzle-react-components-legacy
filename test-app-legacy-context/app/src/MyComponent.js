@@ -5,7 +5,7 @@ import {
   ContractForm,
 } from "drizzle-react-components";
 
-import logo from "../logo.png";
+import logo from "./logo.png";
 
 export default ({ accounts }) => (
   <div className="App">
