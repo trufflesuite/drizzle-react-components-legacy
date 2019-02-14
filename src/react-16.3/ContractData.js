@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
  */
 
 class ContractData extends Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props)
 
     // Fetch initial value from chain and return cache key for reactive updates.

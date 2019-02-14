@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
  */
 
 class AccountData extends Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
 
     this.precisionRound = this.precisionRound.bind(this);
