@@ -1,6 +1,6 @@
-import { drizzleConnect } from "drizzle-react";
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { drizzleConnect } from 'drizzle-react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 /*
  * Create component.
@@ -27,7 +27,7 @@ class ContractForm extends Component {
         this.inputs = abi[i].inputs;
 
         for (var i = 0; i < this.inputs.length; i++) {
-          initialState[this.inputs[i].name] = "";
+          initialState[this.inputs[i].name] = '';
         }
 
         break;
@@ -39,14 +39,10 @@ class ContractForm extends Component {
 
   handleSubmit() {
     if (this.props.sendArgs) {
-      return this.contracts[this.props.contract].methods[
-        this.props.method
-      ].cacheSend(...Object.values(this.state), this.props.sendArgs);
+      return this.contracts[this.props.contract].methods[this.props.method].cacheSend(...Object.values(this.state), this.props.sendArgs);
     }
 
-    this.contracts[this.props.contract].methods[this.props.method].cacheSend(
-      ...Object.values(this.state),
-    );
+    this.contracts[this.props.contract].methods[this.props.method].cacheSend(...Object.values(this.state));
   }
 
   handleInputChange(event) {
@@ -56,16 +52,16 @@ class ContractForm extends Component {
   translateType(type) {
     switch (true) {
       case /^uint/.test(type):
-        return "number";
-        break;
+        return 'number'
+        break
       case /^string/.test(type) || /^bytes/.test(type):
-        return "text";
-        break;
+        return 'text'
+        break
       case /^bool/.test(type):
-        return "checkbox";
-        break;
+        return 'checkbox'
+        break
       default:
-        return "text";
+        return 'text'
     }
   }
 
@@ -73,32 +69,14 @@ class ContractForm extends Component {
     return (
       <form className="pure-form pure-form-stacked">
         {this.inputs.map((input, index) => {
-          var inputType = this.translateType(input.type);
-          var inputLabel = this.props.labels
-            ? this.props.labels[index]
-            : input.name;
+          var inputType = this.translateType(input.type)
+          var inputLabel = this.props.labels ? this.props.labels[index] : input.name
           // check if input type is struct and if so loop out struct fields as well
-          return (
-            <input
-              key={input.name}
-              type={inputType}
-              name={input.name}
-              value={this.state[input.name]}
-              placeholder={inputLabel}
-              onChange={this.handleInputChange}
-            />
-          );
+          return (<input key={input.name} type={inputType} name={input.name} value={this.state[input.name]} placeholder={inputLabel} onChange={this.handleInputChange} />)
         })}
-        <button
-          key="submit"
-          className="pure-button"
-          type="button"
-          onClick={this.handleSubmit}
-        >
-          Submit
-        </button>
+        <button key="submit" className="pure-button" type="button" onClick={this.handleSubmit}>Submit</button>
       </form>
-    );
+    )
   }
 }
 
