@@ -1,6 +1,6 @@
-import { drizzleConnect } from 'drizzle-react'
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import { drizzleConnect } from "drizzle-react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 /*
  * Create component.
@@ -8,14 +8,16 @@ import PropTypes from 'prop-types'
 
 class ContractData extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     // Fetch initial value from chain and return cache key for reactive updates.
-    var methodArgs = this.props.methodArgs ? this.props.methodArgs : []
+    var methodArgs = this.props.methodArgs ? this.props.methodArgs : [];
 
-    this.contracts = props.drizzle.contracts
+    this.contracts = props.drizzle.contracts;
     this.state = {
-      dataKey: this.contracts[this.props.contract].methods[this.props.method].cacheCall(...methodArgs)
+      dataKey: this.contracts[this.props.contract].methods[
+        this.props.method
+      ].cacheCall(...methodArgs),
     };
 
     // Get the contract ABI
@@ -27,12 +29,15 @@ class ContractData extends Component {
 
     const didContractChange = contract !== nextProps.contract;
     const didMethodChange = method !== nextProps.method;
-    const didArgsChange = JSON.stringify(methodArgs) !== JSON.stringify(nextProps.methodArgs)
+    const didArgsChange =
+      JSON.stringify(methodArgs) !== JSON.stringify(nextProps.methodArgs);
 
     if (didContractChange || didMethodChange || didArgsChange) {
       this.setState({
-        dataKey: this.contracts[nextProps.contract].methods[nextProps.method].cacheCall(...nextProps.methodArgs)
-      })
+        dataKey: this.contracts[nextProps.contract].methods[
+          nextProps.method
+        ].cacheCall(...nextProps.methodArgs),
+      });
     }
   }
 
@@ -41,77 +46,85 @@ class ContractData extends Component {
 
     // Contract is not yet intialized.
     if (!drizzleState.contracts[this.props.contract].initialized) {
-      return (
-        <span>Initializing...</span>
-      )
+      return <span>Initializing...</span>;
     }
 
     // If the cache key we received earlier isn't in the store yet; the initial value is still being fetched.
-    if (!(this.state.dataKey in drizzleState.contracts[this.props.contract][this.props.method])) {
-      return (
-        <span>Fetching...</span>
+    if (
+      !(
+        this.state.dataKey in
+        drizzleState.contracts[this.props.contract][this.props.method]
       )
+    ) {
+      return <span>Fetching...</span>;
     }
 
     // Show a loading spinner for future updates.
-    var pendingSpinner = drizzleState.contracts[this.props.contract].synced ? '' : ' 🔄'
+    var pendingSpinner = drizzleState.contracts[this.props.contract].synced
+      ? ""
+      : " 🔄";
 
     // Optionally hide loading spinner (EX: ERC20 token symbol).
     if (this.props.hideIndicator) {
-      pendingSpinner = ''
+      pendingSpinner = "";
     }
 
-    var displayData = drizzleState.contracts[this.props.contract][this.props.method][this.state.dataKey].value
+    var displayData =
+      drizzleState.contracts[this.props.contract][this.props.method][
+        this.state.dataKey
+      ].value;
 
     // Optionally convert to UTF8
     if (this.props.toUtf8) {
-      displayData = drizzle.web3.utils.hexToUtf8(displayData)
+      displayData = drizzle.web3.utils.hexToUtf8(displayData);
     }
 
     // Optionally convert to Ascii
     if (this.props.toAscii) {
-      displayData = drizzle.web3.utils.hexToAscii(displayData)
+      displayData = drizzle.web3.utils.hexToAscii(displayData);
     }
 
     // If return value is an array
-    if (typeof displayData === 'array') {
+    if (typeof displayData === "array") {
       const displayListItems = displayData.map((datum, index) => {
-        <li key={index}>{`${datum}`}{pendingSpinner}</li>
-      })
+        <li key={index}>
+          {`${datum}`}
+          {pendingSpinner}
+        </li>;
+      });
 
-      return (
-        <ul>
-          {displayListItems}
-        </ul>
-      )
+      return <ul>{displayListItems}</ul>;
     }
 
     // If retun value is an object
-    if (typeof displayData === 'object') {
-      var i = 0
-      const displayObjectProps = []
+    if (typeof displayData === "object") {
+      var i = 0;
+      const displayObjectProps = [];
 
-      Object.keys(displayData).forEach((key) => {
+      Object.keys(displayData).forEach(key => {
         if (i != key) {
-          displayObjectProps.push(<li key={i}>
-            <strong>{key}</strong>{pendingSpinner}<br />
-            {`${displayData[key]}`}
-          </li>)
+          displayObjectProps.push(
+            <li key={i}>
+              <strong>{key}</strong>
+              {pendingSpinner}
+              <br />
+              {`${displayData[key]}`}
+            </li>,
+          );
         }
 
-        i++
-      })
+        i++;
+      });
 
-      return (
-        <ul>
-          {displayObjectProps}
-        </ul>
-      )
+      return <ul>{displayObjectProps}</ul>;
     }
 
     return (
-      <span>{`${displayData}`}{pendingSpinner}</span>
-    )
+      <span>
+        {`${displayData}`}
+        {pendingSpinner}
+      </span>
+    );
   }
 }
 
