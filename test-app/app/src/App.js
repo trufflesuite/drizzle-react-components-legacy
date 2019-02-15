@@ -7,8 +7,7 @@ import "./App.css";
 import drizzleOptions from "./drizzleOptions";
 import MyComponent from "./MyComponent";
 
-const drizzleStore = generateStore(drizzleOptions);
-const drizzle = new Drizzle(drizzleOptions, drizzleStore);
+const drizzle = new Drizzle(drizzleOptions);
 
 class App extends Component {
   render() {
