@@ -76,6 +76,14 @@ class ContractData extends Component {
       displayData = this.context.drizzle.web3.utils.hexToAscii(displayData);
     }
 
+    // If the element has children, let the children render the displayData
+    if (this.props.children) {
+      const childrenWithProps = React.Children.map(this.props.children, child =>
+        React.cloneElement(child, { displaydata: displayData }),
+      );
+      return childrenWithProps;
+    }
+
     // If return value is an array
     if (Array.isArray(displayData)) {
       const displayListItems = displayData.map((datum, index) => {
@@ -134,6 +142,7 @@ ContractData.propTypes = {
   hideIndicator: PropTypes.bool,
   toUtf8: PropTypes.bool,
   toAscii: PropTypes.bool,
+  children: PropTypes.node,
 };
 
 /*
