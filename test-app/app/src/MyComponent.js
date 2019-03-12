@@ -5,7 +5,7 @@ import logo from "./logo.png";
 
 const { AccountData, ContractData, ContractForm } = newContextComponents;
 
-const myrender = data => (
+const myRender = data => (
   <>
     Value=<b>{data}</b>
   </>
@@ -148,7 +148,7 @@ export default () => (
               drizzle={drizzle}
               drizzleState={drizzleState}
               contract="ComplexStorage"
-              method="getuintarray"
+              method="getUintarray"
             />
           </div>
           <div className="section">
@@ -180,7 +180,7 @@ export default () => (
                 contract="ComplexStorage"
                 method="string2"
                 toUtf8
-                render={myrender}
+                render={myRender}
               />
             </p>
             <strong>Single Device Data: </strong>
@@ -214,7 +214,7 @@ export default () => (
               drizzle={drizzle}
               drizzleState={drizzleState}
               contract="ComplexStorage"
-              method="getuintarray"
+              method="getUintarray"
               render={displayData => (
                 <ol>
                   {displayData.map(v => (

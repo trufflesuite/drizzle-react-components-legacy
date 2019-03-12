@@ -7,7 +7,7 @@ import {
 
 import logo from "./logo.png";
 
-const myrender = data => (
+const myRender = data => (
   <>
     Value=<b>{data}</b>
   </>
@@ -89,7 +89,7 @@ export default ({ accounts }) => (
       <strong>Single Device Data: </strong>
       <ContractData contract="ComplexStorage" method="singleDD" />
       <strong>Array of UInts: </strong>
-      <ContractData contract="ComplexStorage" method="getuintarray" />{" "}
+      <ContractData contract="ComplexStorage" method="getUintarray" />{" "}
     </div>
     <div className="section">
       <h2>ComplexStorage with Custom Rendering</h2>
@@ -116,7 +116,7 @@ export default ({ accounts }) => (
           contract="ComplexStorage"
           method="string2"
           toUtf8
-          render={myrender}
+          render={myRender}
         />
       </p>
       <strong>Single Device Data: </strong>
@@ -146,7 +146,7 @@ export default ({ accounts }) => (
       <strong>Array of UInts: </strong>
       <ContractData
         contract="ComplexStorage"
-        method="getuintarray"
+        method="getUintarray"
         render={displayData => (
           <ol>
             {displayData.map(v => (
