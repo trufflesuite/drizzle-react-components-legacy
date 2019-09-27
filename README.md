@@ -1,3 +1,5 @@
+**DEPRECATION NOTICE** This repository has been deprecated in favor of: https://github.com/trufflesuite/drizzle
+
 # drizzle-react-components
 
 A set of useful components for common UI elements.
